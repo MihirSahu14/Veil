@@ -1,0 +1,36 @@
+# Unity generated folders
+Library/
+Temp/
+Obj/
+Build/
+Builds/
+Logs/
+UserSettings/
+MemoryCaptures/
+
+# Version control
+.plastic/
+.ignore/
+
+# IDE files
+.vscode/
+.idea/
+*.csproj
+*.sln
+*.user
+*.suo
+.DS_Store
+Thumbs.db
+
+# Builds and packages
+*.apk
+*.aab
+*.exe
+*.zip
+*.app
+*.unitypackage
+
+# Keep essential files
+!Assets/
+!ProjectSettings/
+!Packages/

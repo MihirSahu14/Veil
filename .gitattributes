@@ -1,0 +1,19 @@
+# Normalize text files
+* text=auto eol=lf
+
+# Unity assets (binary files)
+*.png binary
+*.jpg binary
+*.fbx binary
+*.prefab binary
+*.unity binary
+*.anim binary
+*.controller binary
+*.mat binary
+*.wav binary
+*.mp3 binary
+
+# YAML merge for scenes and prefabs
+*.meta merge=unityyamlmerge eol=lf
+*.unity merge=unityyamlmerge eol=lf
+*.prefab merge=unityyamlmerge eol=lf
