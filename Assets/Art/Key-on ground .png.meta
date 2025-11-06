@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f6b7743911044fa41b6214aa3c6f6f1c
+guid: a41646cadc6a992458924f8a5d62ace9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4315663859587590720
-    second: End scene_Escaped_0
+      213: 4936671128521232474
+    second: Key-on ground _0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 0
   alignment: 0
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: End scene_Escaped_0
+      name: Key-on ground _0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 701
-        height: 588
+        x: 383
+        y: 266
+        width: 12
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 04aa5b83a6154eb30800000000000000
-      internalID: 4315663859587590720
+      spriteID: a505f6c5c34928440800000000000000
+      internalID: 4936671128521232474
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      End scene_Escaped_0: 4315663859587590720
+      Key-on ground _0: 4936671128521232474
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

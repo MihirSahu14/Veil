@@ -1,26 +1,30 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class JumpScareManager : MonoBehaviour
 {
     [Header("UI")]
+    [Tooltip("Full-screen Image for the jump scare art.")]
     public Image jumpScareImage;      // Canvas/JumpScare (Image)
 
     [Header("Audio (optional)")]
     public AudioSource audioSource;   // Optional
     public AudioClip screamClip;      // Optional
 
-    [Header("Timing")]
-    public float fadeTime = 0.35f;    // fade-in speed
-    public float holdTime = 1.5f;     // how long to show before reset
+    [Header("Timing (unscaled time)")]
+    [Tooltip("Seconds to fade in the jump scare image.")]
+    public float fadeTime = 0.35f;
+    [Tooltip("Seconds to keep the image fully visible.")]
+    public float holdTime = 1.50f;
+    [Tooltip("Seconds to fade out before showing Lose screen. Set 0 for no fade-out.")]
+    public float fadeOutTime = 0.25f;
 
     bool playing;
 
     void Awake()
     {
-        // Ensure overlay is invisible and time is normal at scene start
+        // Start invisible but enabled (so we can control alpha).
         if (jumpScareImage)
         {
             var c = jumpScareImage.color;
@@ -28,10 +32,12 @@ public class JumpScareManager : MonoBehaviour
             jumpScareImage.color = c;
             jumpScareImage.gameObject.SetActive(true);
         }
-        Time.timeScale = 1f;
         playing = false;
+        // Ensure gameplay is normal at scene start.
+        Time.timeScale = 1f;
     }
 
+    /// <summary>Trigger the jump scare sequence (ignored if already playing).</summary>
     public void Trigger()
     {
         if (!playing) StartCoroutine(PlayCo());
@@ -41,11 +47,11 @@ public class JumpScareManager : MonoBehaviour
     {
         playing = true;
 
-        if (screamClip && audioSource)
+        if (audioSource && screamClip)
             audioSource.PlayOneShot(screamClip);
 
-        // Fade in the jumpscare image
-        if (jumpScareImage)
+        // Fade IN
+        if (jumpScareImage && fadeTime > 0f)
         {
             var c = jumpScareImage.color;
             for (float t = 0f; t < fadeTime; t += Time.unscaledDeltaTime)
@@ -56,14 +62,52 @@ public class JumpScareManager : MonoBehaviour
             }
             c.a = 1f; jumpScareImage.color = c;
         }
+        else
+        {
+            SetAlpha(1f);
+        }
 
-        // Freeze gameplay (UI still animates with unscaled time)
+        // Pause gameplay (UI keeps animating on unscaled time)
         Time.timeScale = 0f;
-        yield return new WaitForSecondsRealtime(holdTime);
 
-        // Restore and reload scene for MVP
-        Time.timeScale = 1f;
-        Scene active = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(active.buildIndex);
+        // Hold at full opacity
+        float remain = holdTime;
+        while (remain > 0f)
+        {
+            remain -= Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        // Optional fade OUT (cosmetic)
+        if (fadeOutTime > 0f)
+        {
+            var c = jumpScareImage ? jumpScareImage.color : Color.white;
+            for (float t = 0f; t < fadeOutTime; t += Time.unscaledDeltaTime)
+            {
+                c.a = Mathf.Lerp(1f, 0f, t / fadeOutTime);
+                if (jumpScareImage) jumpScareImage.color = c;
+                yield return null;
+            }
+            SetAlpha(0f);
+        }
+
+        // Show Lose screen; keep game paused. GameManager.RestartToStart() should restore timeScale = 1.
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.Lose();
+        }
+        else
+        {
+            Debug.LogWarning("JumpScareManager: No GameManager in scene; unpausing gameplay as a fallback.");
+            Time.timeScale = 1f; // fallback if no Lose screen to show
+        }
+
+        playing = false;
+    }
+
+    void SetAlpha(float a)
+    {
+        if (!jumpScareImage) return;
+        var c = jumpScareImage.color; c.a = a; jumpScareImage.color = c;
     }
 }

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f6b7743911044fa41b6214aa3c6f6f1c
+guid: d916cb61eb8a5ee4197b51dc417b1116
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4315663859587590720
-    second: End scene_Escaped_0
+      213: 3193884466116092473
+    second: Battery-on ground_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: End scene_Escaped_0
+      name: Battery-on ground_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 701
-        height: 588
+        x: 378
+        y: 239
+        width: 25
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 04aa5b83a6154eb30800000000000000
-      internalID: 4315663859587590720
+      spriteID: 932ec700005f25c20800000000000000
+      internalID: 3193884466116092473
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      End scene_Escaped_0: 4315663859587590720
+      Battery-on ground_0: 3193884466116092473
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

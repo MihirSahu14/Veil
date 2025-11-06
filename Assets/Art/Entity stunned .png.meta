@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f6b7743911044fa41b6214aa3c6f6f1c
+guid: 6a522d1fcee6c1d42bd5474293def925
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4315663859587590720
-    second: End scene_Escaped_0
+      213: 5177399515189202813
+    second: Entity stunned _0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: End scene_Escaped_0
+      name: Entity stunned _0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 701
-        height: 588
+        x: 374
+        y: 131
+        width: 214
+        height: 327
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 04aa5b83a6154eb30800000000000000
-      internalID: 4315663859587590720
+      spriteID: d7fc1239d61d9d740800000000000000
+      internalID: 5177399515189202813
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      End scene_Escaped_0: 4315663859587590720
+      Entity stunned _0: 5177399515189202813
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

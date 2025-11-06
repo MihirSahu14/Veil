@@ -7,27 +7,44 @@ public class Enemy : MonoBehaviour, IStunnable
 {
     public enum State { Idle, Patrol, Chase, Stunned }
 
+    #region Targeting
     [Header("Targeting")]
     public float chaseRange = 7f;
     public float loseSightRange = 9f;
     public float stopRange = 0.6f;
+    #endregion
 
+    #region Movement
     [Header("Movement")]
     public float moveSpeed = 2.2f;
     public float patrolSpeed = 1.3f;
     public float patrolRadius = 3.0f;
     public Vector2 patrolChangeEvery = new Vector2(1.2f, 2.5f);
+    #endregion
 
-    [Header("Visuals (optional)")]
-    public SpriteRenderer spriteRenderer;
+    #region Visuals
+    [Header("Visuals")]
+    public SpriteRenderer spriteRenderer;     // assign or auto-find
+    [Tooltip("Sprite used in normal/non-stunned states. If left empty, the current sprite at Awake() will be used.")]
+    public Sprite normalSprite;
+    [Tooltip("Sprite to show while stunned (e.g., slumped/eyes closed). Optional.")]
+    public Sprite stunnedSprite;
+    [Tooltip("Optional tint to apply while stunned (used in addition to stunnedSprite, or instead if no sprite provided).")]
     public Color stunnedTint = new Color(1f, 0.6f, 0.6f, 1f);
+    #endregion
 
+    #region Catch / Game Over
     [Header("Catch / Game Over")]
     public JumpScareManager jumpScare;    // assign in Inspector (auto-found as backup)
     public float catchGrace = 1.0f;       // seconds after start before catching allowed
     public float catchDistance = 0.45f;   // extra safety: catch if within this distance
+    #endregion
 
-    // internals
+    [Header("Facing")]
+    public bool spriteFacesLeftByDefault = true;
+
+
+    // ---------- internals ----------
     State state = State.Patrol;
     Rigidbody2D rb;
     Transform player;
@@ -43,10 +60,14 @@ public class Enemy : MonoBehaviour, IStunnable
     {
         rb = GetComponent<Rigidbody2D>();
         if (!spriteRenderer) spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        baseColor = spriteRenderer ? spriteRenderer.color : Color.white;
-        spawnPos = transform.position;
 
-        // backup: auto-locate a JumpScareManager if not assigned
+        if (spriteRenderer)
+        {
+            baseColor = spriteRenderer.color;
+            if (!normalSprite) normalSprite = spriteRenderer.sprite;
+        }
+
+        spawnPos = transform.position;
         if (!jumpScare) jumpScare = FindFirstObjectByType<JumpScareManager>();
     }
 
@@ -76,8 +97,17 @@ public class Enemy : MonoBehaviour, IStunnable
                 break;
 
             case State.Chase:
-                if (dist > loseSightRange) { state = State.Patrol; PatrolStep(); break; }
-                if (dist <= stopRange) { rb.linearVelocity = Vector2.zero; break; }
+                if (dist > loseSightRange)
+                {
+                    state = State.Patrol;
+                    PatrolStep();
+                    break;
+                }
+                if (dist <= stopRange)
+                {
+                    rb.linearVelocity = Vector2.zero;
+                    break;
+                }
                 Vector2 dir = ((Vector2)player.position - (Vector2)transform.position).normalized;
                 rb.linearVelocity = dir * moveSpeed;
                 FlipSprite(dir.x);
@@ -89,7 +119,6 @@ public class Enemy : MonoBehaviour, IStunnable
                 break;
         }
 
-        // Distance-based catch fallback (covers edge cases where collisions don't fire)
         if (Time.time >= canCatchAt && !stunned && player && dist <= catchDistance)
         {
             TriggerCatch("distance");
@@ -117,8 +146,15 @@ public class Enemy : MonoBehaviour, IStunnable
     void FlipSprite(float x)
     {
         if (!spriteRenderer) return;
-        if (Mathf.Abs(x) > 0.05f) spriteRenderer.flipX = x < 0f;
+        if (Mathf.Abs(x) < 0.05f) return;
+
+        bool movingRight = x > 0f;
+        if (!spriteFacesLeftByDefault)
+            spriteRenderer.flipX = movingRight;   
+        else
+            spriteRenderer.flipX = !movingRight;  
     }
+
 
     // ====== IStunnable ======
     public void Stun(float duration)
@@ -127,7 +163,7 @@ public class Enemy : MonoBehaviour, IStunnable
 
         if (stunned && Time.time < stunUntil)
         {
-            stunUntil = Time.time + duration; // extend
+            stunUntil = Time.time + duration;
             return;
         }
 
@@ -142,7 +178,11 @@ public class Enemy : MonoBehaviour, IStunnable
         stunUntil = Time.time + duration;
         rb.linearVelocity = Vector2.zero;
 
-        if (spriteRenderer) spriteRenderer.color = stunnedTint;
+        if (spriteRenderer)
+        {
+            if (stunnedSprite) spriteRenderer.sprite = stunnedSprite;
+            spriteRenderer.color = stunnedTint;
+        }
 
         while (Time.time < stunUntil)
         {
@@ -150,14 +190,17 @@ public class Enemy : MonoBehaviour, IStunnable
             yield return null;
         }
 
-        if (spriteRenderer) spriteRenderer.color = baseColor;
+        if (spriteRenderer)
+        {
+            if (normalSprite) spriteRenderer.sprite = normalSprite;
+            spriteRenderer.color = baseColor;
+        }
 
         stunned = false;
         state = State.Patrol;
         ScheduleNextPatrolDir();
     }
 
-    // Robust collision: works even if the contact is a child collider of the player
     void OnCollisionEnter2D(Collision2D col)
     {
         if (Time.time < canCatchAt || stunned) return;

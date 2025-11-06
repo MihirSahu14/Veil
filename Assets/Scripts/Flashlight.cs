@@ -20,6 +20,9 @@ public class Flashlight : MonoBehaviour
     [Tooltip("A second Image on the Canvas that shows the bright 'used flashlight' art.")]
     public Image usedFilm;                 // Canvas/UsedFilm (Image). Enabled during burst only.
 
+    [Header("Battery HUD (optional)")]
+    public BatteryHUD batteryHUD;
+
     [Tooltip("Directional 'used' sprites (Up/Down/Left/Right).")]
     public Sprite usedUp;
     public Sprite usedDown;
@@ -80,13 +83,23 @@ public class Flashlight : MonoBehaviour
 
         // Optional: set film idle sprite
         if (filmImage && idleSprite) filmImage.sprite = idleSprite;
+
+        // Auto-find BatteryHUD if not set
+#if UNITY_2023_1_OR_NEWER
+        if (!batteryHUD) batteryHUD = FindAnyObjectByType<BatteryHUD>();
+#else
+        if (!batteryHUD) batteryHUD = FindObjectOfType<BatteryHUD>();
+#endif
+
+        // Initialize HUD display
+        if (batteryHUD) batteryHUD.Set(charges, maxCharges);
     }
 
-    // ---------- Input System "Send Messages" (use any of these) ----------
+    // ---------- Input System "Send Messages" ----------
     public void OnFlashlight()                                { TryFlash(); }
     public void OnFlashlight(InputValue value)                { if (value.isPressed) TryFlash(); }
     public void OnFlashlight(InputAction.CallbackContext ctx) { if (ctx.performed)   TryFlash(); }
-    // ---------------------------------------------------------------------
+    // ---------------------------------------------------
 
     void TryFlash()
     {
@@ -97,6 +110,8 @@ public class Flashlight : MonoBehaviour
         }
 
         charges = Mathf.Max(0, charges - 1);
+        batteryHUD?.Set(charges, maxCharges);
+
         StartCoroutine(FlashRoutine());
     }
 
@@ -104,7 +119,7 @@ public class Flashlight : MonoBehaviour
     {
         canFlash = false;
 
-        // 1) Quick white flash (purely visual)
+        // 1) Quick white flash (visual)
         if (whiteFlash)
         {
             for (float t = 0f; t < whiteUp; t += Time.unscaledDeltaTime)
@@ -122,7 +137,7 @@ public class Flashlight : MonoBehaviour
             SetWhiteAlpha(0f);
         }
 
-        // 2) Show UsedFilm overlay (and hide Film so it doesn't darken it)
+        // 2) Show UsedFilm overlay (and hide Film)
         if (usedFilm)
         {
             usedFilm.sprite = PickDirectionalSprite();
@@ -130,10 +145,10 @@ public class Flashlight : MonoBehaviour
         }
         if (filmImage) filmImage.enabled = false;
 
-        // 3) Stun enemies repeatedly while the UsedFilm is visible
+        // 3) Keep stunning enemies while UsedFilm active
         float remain = usedFilmDuration;
         float tick = 0f;
-        const float STUN_TICK = 0.15f;   // re-check interval while burst is up
+        const float STUN_TICK = 0.15f;
 
         while (remain > 0f)
         {
@@ -147,7 +162,7 @@ public class Flashlight : MonoBehaviour
             yield return null;
         }
 
-        // 4) Hide UsedFilm and bring Film back
+        // 4) Hide UsedFilm and restore Film
         if (usedFilm) usedFilm.enabled = false;
         if (filmImage)
         {
@@ -207,7 +222,10 @@ public class Flashlight : MonoBehaviour
         {
             var s = h.GetComponent<IStunnable>();
             if (s != null)
+            {
                 s.Stun(stunDuration);
+                Debug.Log($"😵 Stunned {h.name} for {stunDuration}s");
+            }
         }
     }
 
@@ -224,6 +242,15 @@ public class Flashlight : MonoBehaviour
         Gizmos.matrix = Matrix4x4.TRS(center, Quaternion.Euler(0, 0, angle), Vector3.one);
         Gizmos.DrawWireCube(Vector3.zero, new Vector3(boxLength, boxWidth, 0.01f));
         Gizmos.matrix = prev;
+    }
+
+    // ---------------- external API ----------------
+    public bool IsFull() => charges >= maxCharges;
+
+    public void RefillToMax()
+    {
+        charges = maxCharges;
+        batteryHUD?.Set(charges, maxCharges);
     }
 }
 
