@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8761284965950933423}
   - component: {fileID: 4229371763983668000}
   - component: {fileID: 4917694214765978956}
+  - component: {fileID: 91249041432580254}
   m_Layer: 10
   m_Name: Enemy
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 12.23, y: 4.63, z: 0}
-  m_LocalScale: {x: 6, y: 6, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -81,7 +82,7 @@ SpriteRenderer:
   m_SortingLayerID: 1104336697
   m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: fa5aefe412906344fbd02659194d2671, type: 3}
+  m_Sprite: {fileID: 6680439483125113145, guid: 233c8bf2798277648800451e3e351b8a, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -154,4 +155,31 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  m_Radius: 1.94
+--- !u!114 &91249041432580254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3194128627161744785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce7cb7cf93b0e6e47ac2a5f1c9419fa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  chaseRange: 4.3
+  loseSightRange: 8.5
+  stopRange: 0.87
+  moveSpeed: 3
+  patrolSpeed: 1.3
+  patrolRadius: 3
+  patrolChangeEvery: {x: 1.2, y: 2.5}
+  spriteRenderer: {fileID: 8761284965950933423}
+  normalSprite: {fileID: 0}
+  stunnedSprite: {fileID: 5177399515189202813, guid: 6a522d1fcee6c1d42bd5474293def925, type: 3}
+  stunnedTint: {r: 1, g: 1, b: 1, a: 1}
+  jumpScare: {fileID: 0}
+  catchGrace: 1
+  catchDistance: 2.53
+  spriteFacesLeftByDefault: 0

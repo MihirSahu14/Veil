@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5398944382567967619}
   - component: {fileID: 6959603716891901106}
   - component: {fileID: 6318315224868094653}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Battery
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.71056, y: 2.16888, z: 0}
-  m_LocalScale: {x: 2.77, y: 3.01, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -78,11 +78,11 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 3
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_SortingLayerID: 1430922559
+  m_SortingLayer: 3
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: d916cb61eb8a5ee4197b51dc417b1116, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -122,12 +122,12 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.3
+  m_Offset: {x: 0.41, y: -0.41}
+  m_Radius: 0.2
 --- !u!114 &6318315224868094653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,15 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5026eb8e8cea549980fea92e32813f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BatteryPickup
-  sr: {fileID: 0}
-  sfxPickup: {fileID: 0}
-  flashlight: {fileID: 0}
-  interactRadius: 1.1
-  useTrigger: 1
-  requirePressE: 1
   playerTag: Player
-  pulseWhenPlayerNear: 1
-  pulseSpeed: 2
-  pulseScale: 1.1
-  glowNear: {r: 1, g: 1, b: 1, a: 1}
-  glowFar: {r: 0.8, g: 0.8, b: 0.8, a: 0.9}
+  sfx: {fileID: 0}
+  pickupVFX: {fileID: 0}
+  destroyDelay: 0.1

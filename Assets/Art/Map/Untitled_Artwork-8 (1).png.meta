@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 48a3334a810e4e64abc5556c1eb70eff
+guid: 2c726c22d8b71e34c86dd27897fbb063
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5466427830727328592
-    second: Updated Tutorial Screen_0
+      213: -5679571832773216486
+    second: Untitled_Artwork-8 (1)_0
+  - first:
+      213: 7428820289239132027
+    second: Untitled_Artwork-8 (1)_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +49,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +116,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Updated Tutorial Screen_0
+      name: Untitled_Artwork-8 (1)_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 701
-        height: 588
+        x: 1481
+        y: 1208
+        width: 62
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +131,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 053cfc05627acdb40800000000000000
-      internalID: 5466427830727328592
+      spriteID: a17fc3f728b1e21b0800000000000000
+      internalID: -5679571832773216486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Untitled_Artwork-8 (1)_1
+      rect:
+        serializedVersion: 2
+        x: 1594
+        y: 1206
+        width: 58
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b77205881b8781760800000000000000
+      internalID: 7428820289239132027
       vertices: []
       indices: 
       edges: []
@@ -138,7 +163,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +173,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Updated Tutorial Screen_0: 5466427830727328592
+      Untitled_Artwork-8 (1)_0: -5679571832773216486
+      Untitled_Artwork-8 (1)_1: 7428820289239132027
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

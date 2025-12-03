@@ -67,6 +67,8 @@ public class Flashlight : MonoBehaviour
     // --------------- Internals ---------------
     bool canFlash = true;
     Vector3 filmBaseScale = Vector3.one;
+    public LayerMask wallMask;
+
 
     void Start()
     {
@@ -145,22 +147,12 @@ public class Flashlight : MonoBehaviour
         }
         if (filmImage) filmImage.enabled = false;
 
-        // 3) Keep stunning enemies while UsedFilm active
-        float remain = usedFilmDuration;
-        float tick = 0f;
-        const float STUN_TICK = 0.15f;
+        // --- INSTANT SINGLE STUN --- 
+        StunEnemiesForwardBox();
 
-        while (remain > 0f)
-        {
-            if (tick <= 0f)
-            {
-                StunEnemiesForwardBox();
-                tick = STUN_TICK;
-            }
-            tick -= Time.unscaledDeltaTime;
-            remain -= Time.unscaledDeltaTime;
-            yield return null;
-        }
+        // still show the UsedFilm visual for the full duration
+        yield return new WaitForSecondsRealtime(usedFilmDuration);
+
 
         // 4) Hide UsedFilm and restore Film
         if (usedFilm) usedFilm.enabled = false;
@@ -208,8 +200,8 @@ public class Flashlight : MonoBehaviour
 
     void StunEnemiesForwardBox()
     {
-        Vector2 forward = GetAimDir();
-        Vector2 center = (Vector2)transform.position + forward.normalized * boxForwardOffset;
+        Vector2 forward = GetAimDir().normalized;
+        Vector2 center = (Vector2)transform.position + forward * boxForwardOffset;
 
         Collider2D[] hits = Physics2D.OverlapBoxAll(
             center,
@@ -221,11 +213,28 @@ public class Flashlight : MonoBehaviour
         foreach (var h in hits)
         {
             var s = h.GetComponent<IStunnable>();
-            if (s != null)
+            if (s == null) continue;
+
+            // --- WALL CHECK (blocks cross-room stun) ---
+            Vector2 toEnemy = (Vector2)h.transform.position - (Vector2)transform.position;
+            float dist = toEnemy.magnitude;
+
+            RaycastHit2D block = Physics2D.Raycast(
+                transform.position,
+                toEnemy.normalized,
+                dist,
+                wallMask   // make this public LayerMask wallMask in inspector
+            );
+
+            if (block.collider != null)
             {
-                s.Stun(stunDuration);
-                Debug.Log($"😵 Stunned {h.name} for {stunDuration}s");
+                Debug.Log($"Stun blocked by {block.collider.name}");
+                continue;
             }
+
+            // --- STUN ---
+            s.Stun(stunDuration);
+            Debug.Log("Stunned " + h.name);
         }
     }
 

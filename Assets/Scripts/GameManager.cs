@@ -1,4 +1,5 @@
 // Assets/Scripts/GameManager.cs
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;   // for Keyboard.current
@@ -15,6 +16,9 @@ public class GameManager : MonoBehaviour
     public string startScreenSceneName = "StartScene";
 
     public bool HasKey { get; private set; }
+
+    public event Action<bool> KeyChanged;
+
     bool _ended;
 
     void Awake()
@@ -27,6 +31,7 @@ public class GameManager : MonoBehaviour
 
         _ended = false;
         HasKey = false;
+        KeyChanged?.Invoke(HasKey);
     }
 
     void Update()
@@ -41,12 +46,14 @@ public class GameManager : MonoBehaviour
     public void GiveKey()
     {
         HasKey = true;
+        KeyChanged?.Invoke(true);
         Debug.Log("🔑 Key obtained");
     }
 
     public void ConsumeKey()
     {
         HasKey = false;
+        KeyChanged?.Invoke(false);
     }
 
     public void Win()
@@ -70,6 +77,7 @@ public class GameManager : MonoBehaviour
     {
         HasKey = false;
         _ended = false;
+        KeyChanged?.Invoke(false);
 
         // Try the configured name first
         try
