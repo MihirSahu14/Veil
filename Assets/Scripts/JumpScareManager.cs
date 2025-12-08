@@ -7,6 +7,8 @@ public class JumpScareManager : MonoBehaviour
     [Header("UI")]
     [Tooltip("Full-screen Image for the jump scare art.")]
     public Image jumpScareImage;      // Canvas/JumpScare (Image)
+    [Tooltip("Optional Animator on the JumpScare Image for frame animation.")]
+    public Animator jumpScareAnimator; // optional: plays sprite animation
 
     [Header("Audio (optional)")]
     public AudioSource audioSource;   // Optional
@@ -24,6 +26,9 @@ public class JumpScareManager : MonoBehaviour
 
     void Awake()
     {
+        if (!jumpScareAnimator && jumpScareImage)
+            jumpScareAnimator = jumpScareImage.GetComponent<Animator>();
+
         // Start invisible but enabled (so we can control alpha).
         if (jumpScareImage)
         {
@@ -46,6 +51,9 @@ public class JumpScareManager : MonoBehaviour
     IEnumerator PlayCo()
     {
         playing = true;
+
+        if (jumpScareAnimator)
+            jumpScareAnimator.Play(0, 0, 0f); // restart the jump scare animation
 
         if (audioSource && screamClip)
             audioSource.PlayOneShot(screamClip);

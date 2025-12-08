@@ -20,6 +20,19 @@ public class Enemy : MonoBehaviour, IStunnable
     public float patrolSpeed = 1.3f;
     public float patrolRadius = 3.0f;
     public Vector2 patrolChangeEvery = new Vector2(1.2f, 2.5f);
+    [Header("Footsteps (optional, loop clip)")]
+    public AudioSource footstepSource;
+    public AudioClip footstepClip;
+    [Tooltip("Base pitch for the loop (1 = normal).")]
+    public float footstepBasePitch = 1f;
+    [Tooltip("If true, footsteps also play in Patrol; otherwise only in Chase.")]
+    public bool footstepsInPatrol = false;
+    [Tooltip("Pitch when patrolling (used if footstepsInPatrol = true).")]
+    public float patrolFootstepPitch = 0.8f;
+    [Tooltip("Pitch when chasing.")]
+    public float chaseFootstepPitch = 1.1f;
+    public float minSpeedForStep = 0.1f;
+    [Range(0f, 0.2f)] public float pitchJitter = 0.05f;
     #endregion
 
     #region Visuals
@@ -123,6 +136,8 @@ public class Enemy : MonoBehaviour, IStunnable
         {
             TriggerCatch("distance");
         }
+
+        HandleFootsteps(rb.linearVelocity.magnitude);
     }
 
     void PatrolStep()
@@ -199,6 +214,53 @@ public class Enemy : MonoBehaviour, IStunnable
         stunned = false;
         state = State.Patrol;
         ScheduleNextPatrolDir();
+    }
+
+    void HandleFootsteps(float speedMag)
+    {
+        if (!footstepSource || !footstepClip) return;
+        if (stunned) return;
+
+        if (GameManager.Instance && GameManager.Instance.IsGameEnded())
+        {
+            if (footstepSource.isPlaying) footstepSource.Stop();
+            return;
+        }
+
+        bool inChase = state == State.Chase;
+        bool inPatrol = state == State.Patrol;
+        bool allowPatrol = footstepsInPatrol;
+
+        bool movingState = inChase || (allowPatrol && inPatrol);
+        bool shouldPlay = movingState && speedMag >= minSpeedForStep;
+
+        if (shouldPlay)
+        {
+            if (!footstepSource.isPlaying)
+            {
+                float basePitch = inChase ? chaseFootstepPitch : patrolFootstepPitch;
+                if (pitchJitter > 0f)
+                    footstepSource.pitch = basePitch + Random.Range(-pitchJitter, pitchJitter);
+                else
+                    footstepSource.pitch = basePitch;
+
+                footstepSource.clip = footstepClip;
+                footstepSource.loop = true;
+                footstepSource.Play();
+            }
+            else
+            {
+                float basePitch = inChase ? chaseFootstepPitch : patrolFootstepPitch;
+                footstepSource.pitch = basePitch; // keep updated if state changes while playing
+            }
+        }
+        else
+        {
+            if (footstepSource.isPlaying)
+            {
+                footstepSource.Stop();
+            }
+        }
     }
 
     void OnCollisionEnter2D(Collision2D col)

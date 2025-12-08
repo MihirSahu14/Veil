@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: fbc718d360ee9794193dafe3d7f14805
+guid: 339d7d98a0c86cf439bec9b6177b1ace
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8277461822285959776
-    second: Good end_0
+      213: 1443201375030769109
+    second: End scene_Escaped 2.0_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 0
   alignment: 0
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Good end_0
+      name: End scene_Escaped 2.0_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0625637eba37fd270800000000000000
-      internalID: 8277461822285959776
+      spriteID: 5d570121108470410800000000000000
+      internalID: 1443201375030769109
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Good end_0: 8277461822285959776
+      End scene_Escaped 2.0_0: 1443201375030769109
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -175,6 +175,14 @@ MonoBehaviour:
   patrolSpeed: 1.3
   patrolRadius: 3
   patrolChangeEvery: {x: 1.2, y: 2.5}
+  footstepSource: {fileID: 0}
+  footstepClip: {fileID: 8300000, guid: 76992fb0dde4ed8488105cf869b988ab, type: 3}
+  footstepBasePitch: 1
+  footstepsInPatrol: 0
+  patrolFootstepPitch: 0.8
+  chaseFootstepPitch: 1.1
+  minSpeedForStep: 0.1
+  pitchJitter: 0.05
   spriteRenderer: {fileID: 8761284965950933423}
   normalSprite: {fileID: 0}
   stunnedSprite: {fileID: 5177399515189202813, guid: 6a522d1fcee6c1d42bd5474293def925, type: 3}

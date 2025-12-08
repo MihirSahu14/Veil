@@ -19,12 +19,16 @@ public class DrawerUIManager : MonoBehaviour
     public Sprite batterySprite;
     public Sprite emptySprite;
     public Text label;
+    [Tooltip("Optional Animator on the item icon (e.g., looping key animation).")]
+    public Animator itemIconAnimator; // optional
 
     // ---------- NEW: scare config ----------
     [Header("Scare (non-lethal)")]
     [Range(0f, 1f)]
     public float scareChance = 0.4f;         // 40% by default
     public Image scareImage;                 // full-screen image above drawer UI
+    [Tooltip("Optional Animator on the scare image for frame animation.")]
+    public Animator scareAnimator;           // optional: plays scare animation
     public AudioSource scareAudio;           // optional
     public AudioClip scareClip;              // optional
     public float scareFadeTime = 0.12f;
@@ -57,6 +61,12 @@ public class DrawerUIManager : MonoBehaviour
             scareImage.color = c;
             scareImage.gameObject.SetActive(false);
         }
+
+        if (!scareAnimator && scareImage)
+            scareAnimator = scareImage.GetComponent<Animator>();
+
+        if (!itemIconAnimator && itemIcon)
+            itemIconAnimator = itemIcon.GetComponent<Animator>();
     }
 
     void Update()
@@ -126,7 +136,6 @@ public class DrawerUIManager : MonoBehaviour
         Sprite icon = emptySprite;
         string text = "";
         float targetAlpha = 0f;                 // default: invisible (for Empty)
-        Vector3 targetScale = Vector3.one;      // default scale
 
         if (currentDrawer.lootType == DrawerLootType.Key)
         {
@@ -134,10 +143,11 @@ public class DrawerUIManager : MonoBehaviour
             text = "Key";
             targetAlpha = 1f;
 
-            // Make key bigger
-            itemIcon.rectTransform.sizeDelta = new Vector2(220f, 220f); // tweak if needed
-
-            targetScale = Vector3.one;
+            if (itemIconAnimator)
+            {
+                itemIconAnimator.enabled = true;
+                itemIconAnimator.Play(0, 0, 0f); // restart key animation
+            }
         }
 
         else if (currentDrawer.lootType == DrawerLootType.Battery)
@@ -146,11 +156,11 @@ public class DrawerUIManager : MonoBehaviour
             text = "Battery";
             targetAlpha = 1f;
 
-            // Make battery bigger
-            itemIcon.rectTransform.sizeDelta = new Vector2(2000f, 2000f); // tweak if needed
-
-            float s = 1f; // ignore scale when using sizeDelta
-            targetScale = new Vector3(s, s, 1f);
+            if (itemIconAnimator)
+            {
+                // optional: keep animator off for battery if you only animate key
+                itemIconAnimator.enabled = false;
+            }
         }
 
         // else: lootType == Empty -> keep empty sprite, alpha 0, no text
@@ -163,9 +173,6 @@ public class DrawerUIManager : MonoBehaviour
             var c = itemIcon.color;
             c.a = targetAlpha;
             itemIcon.color = c;
-
-            // apply scale
-            itemIcon.rectTransform.localScale = targetScale;
         }
 
         if (label)
@@ -208,6 +215,9 @@ public class DrawerUIManager : MonoBehaviour
         var c = scareImage.color;
         c.a = 0f;
         scareImage.color = c;
+
+        if (scareAnimator)
+            scareAnimator.Play(0, 0, 0f); // restart scare animation
 
         if (scareAudio && scareClip)
             scareAudio.PlayOneShot(scareClip);
